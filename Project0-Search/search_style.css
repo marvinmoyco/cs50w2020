@@ -1,0 +1,47 @@
+body{
+    font-family: Roboto,san-serif;
+    text-align:center;
+}
+.btn.btn-light{
+    background-color: #DCDCDC;
+}
+.img-fluid{
+    max-width: 45%;
+    margin: 10px;
+    margin-left:0px;
+    align-self: left;
+}
+.form-control{
+    border-radius: 50px 50px 50px 50px
+}
+.input-group-text{
+    border-radius: 50px 50px 50px 50px
+}
+#toprow{
+    background-color: #DCDCDC;
+    margin-bottom: 15px;
+}
+#advance_search_heading{
+    color: rgb(194, 17, 17);
+    text-align: left;
+    margin: 30px;
+    
+}
+.text_input{
+    text-align:left;
+
+}
+.text_input > input{
+    border-color:#DCDCDC;
+    box-sizing: content-box;
+    border-width: 1.5px;
+}
+label{
+    margin: 15px;
+    margin-left:30px;
+}
+div > h4{
+    text-align: left;
+    margin: 30px;
+    
+}

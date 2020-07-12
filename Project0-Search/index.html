@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Image Search</title>
+        <title>Search</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="search_style.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col"> </div>
@@ -23,16 +22,16 @@
                 
               </div>
               <div class="col-10">
-                <img src="bingo_image_search.png" class="img-fluid" alt="search image logo image">
+                <img src="bingo_search.png" class="img-fluid" alt="search logo image">
                 <form action="https://google.com/search">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">📷</span>
+                        <span class="input-group-text" id="basic-addon1">🔍</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Type anything to search..." aria-describedby="basic-addon1" name="q" data-toggle="tooltip" data-placement="top" title="Search bar">
+                        <input type="text" class="form-control" placeholder="Type anything to search..."  aria-describedby="basic-addon1" name="q" data-toggle="tooltip" data-placement="top" title="Search bar">
                     </div>
-                    <input type="hidden" name="tbm" value="isch">
-                    <input type="submit" class="btn btn-light" value="Google Image Search" data-toggle="tooltip" data-placement="top" title="Search for image">
+                    <input type="submit" class="btn btn-light" value="Google Search" id="search_but" data-toggle="tooltip" data-placement="bottom" title="Search">
+                    <input type="submit" class="btn btn-light" value="I'm Feeling Lucky" name="btnI" id="lucky_but" data-toggle="tooltip" data-placement="bottom" title="I'm Feeling Lucky!">
                 </form>
               </div>
               <div class="col">
@@ -50,7 +49,11 @@
 
 
         
+
+
+         
     </body>
 </html>
+
 
 

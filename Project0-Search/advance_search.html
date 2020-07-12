@@ -6,30 +6,61 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="search_style.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     </head>
     <body>
-        <form action="https://google.com/search">
-            <input type="text" name="q">
-            <input type="submit" value="Google Search">
-        </form>
+        <div class="container-fluid">
+            <div class="row" id="toprow">
+                <div class="col"><img src="bingo.png" class="img-fluid" alt="search logo image"> </div>
+                <div class="col"> </div>
+                <div class="col"> 
+                    
+                </div>
+                <span class="border-bottom"></span>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                  <div><h2 id="advance_search_heading">Advanced Search</h2></div>
+                  <div><h4>Find pages with...</h4></div>
+                <form action="https://google.com/search">
+                    <div class="text_input"><label for="all_these_words">all these words:</label>
+                        
+                        <input type="text" id="all_these_words" name="as_q"></div>
+
+                    <div class="text_input"><label for="exact_words_phrases">this exact word or phrase:</label>
+                        <input type="text" id="exact_words_phrases" name="as_epq"></div>
+
+                    <div class="text_input"><label for="any_of_these_words">any of these words:</label>
+                        <input type="text" id="any_of_these_words" name="as_oq"></div>
+
+                    <div class="text_input"><label for="none_of_these_words">none of these words:</label>
+                        <input type="text" id="none_of_these_words" name="as_eq"></div>
+
+                    <div class="text_input"><label for="numbers_ranging">numbers ranging from:</label>
+                        <input type="text" id="numbers_ranging" name="as_nlo">
+                        <label for="to">to:</label>
+                        <input type="text" id="to" name="as_nhi"></div>
+                    
+                    
+                    <input type="submit" class="btn btn-primary" value="Google Advanced Search">
+                </form>
+              </div>
+              <div class="col">
+                <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                    <a class="btn btn-primary" href="index.html" role="button">Search</a>
+                    <a class="btn btn-success" href="image_search.html" role="button">Image Search</a>
+                    <a class="btn btn-info" href="advance_search.html" role="button">Advanced Search</a>
+                  </div>
+                  </div>
+                </div>
+            </div>
+            
+          </div>
+
+
+
+
+
+        
     </body>
 </html>
-
-All these words: shake rattle
-This exact word or phrase: roll
-any of these words: kapamilya
-none of these words: gma
-numbers ranging from:   1  to 100     
-
-
-
-
-https://www.google.com/search?
-hl=en&
-as_q=shake+rattle&
-as_epq=roll&
-as_oq=kapamilya&
-as_eq=gma&
-as_nlo=1&
-as_nhi=100&
-lr=&cr=&as_qdr=all&as_sitesearch=&as_occt=any&safe=images&as_filetype=&tbs=
