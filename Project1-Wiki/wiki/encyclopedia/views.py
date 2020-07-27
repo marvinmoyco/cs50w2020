@@ -1,7 +1,8 @@
 from django.shortcuts import render
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from . import util
-
+import random
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -27,20 +28,22 @@ def entry(request,entry_title):
             })
         return render(request,"encyclopedia/entry.html",{
             "entry": util.get_entry(entry_title),
-            "entry_str": entry_title.capitalize()
+            "entry_str": entry_title.upper()
         })
 
-#def add_entry(request):
-#    return render(request, "encyclopedia/add_entry.html",{
-#
-#    })
+def add_entry(request):
+    return render(request, "encyclopedia/add_entry.html",{
 
-#def edit_entry(request):
-#    return render(request, "encyclopedia/add_entry.html",{
-#
-#    })
+    })
 
-#def random_entry(request):
-#    return render(request, "encyclopedia/add_entry.html",{
-#
-#    })
+def edit_entry(request):
+    return render(request, "encyclopedia/add_entry.html",{
+
+    })
+
+def random_entry(request):
+    len_entries = len(util.list_entries())
+    len_entries -= 1
+    ran_num = random.randint(0,len_entries)
+    ran_entry = util.list_entries()
+    return HttpResponseRedirect(reverse("wiki:entry", args=[ran_entry[ran_num]]))
