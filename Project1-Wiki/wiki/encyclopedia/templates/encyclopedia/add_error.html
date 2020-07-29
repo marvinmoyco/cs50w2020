@@ -1,0 +1,13 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Error ({{entry_str}})
+{% endblock %}
+
+{% block body %}
+    <h1>Error - Page Already Exists</h1>
+    This page is to inform you that there is already an entry for {{entry_str}} in the system. Please use the edit page to change the content of the entry.
+
+   
+
+{% endblock %}

@@ -5,7 +5,14 @@
 {% endblock %}
 
 {% block body %}
-    {{ entry }}
+<h1>Edit Entry "{{ entry_str }}"</h1>
+<form action="{% url 'wiki:edit_entry' entry_str %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" label="Save Entry">
+
+</form>
+    
 
    
 
