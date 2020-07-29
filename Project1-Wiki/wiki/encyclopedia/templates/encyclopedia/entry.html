@@ -4,8 +4,12 @@
     {{ entry_str }}
 {% endblock %}
 
+{% block editpage %}
+    <a href="{% url 'wiki:edit_entry' entry_str %}">Edit this page</a>
+{% endblock %}
+
 {% block body %}
-    {{ entry }}
+    {{ entry | safe }}
 
    
 
