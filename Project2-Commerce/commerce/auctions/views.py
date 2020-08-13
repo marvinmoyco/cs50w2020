@@ -4,12 +4,30 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import *
+
+class New_Listing(forms.Form):
+    title = forms.CharField()
+    description = forms.TextField()
+    initial_bid = forms.PositiveIntegerField()
+    img_url = forms.URLField()
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html",{
+        "active_listings":Listing.objects.all()
+    })
 
+def add_listing(request):
+    new_listing = New_Listing()
+    if request.method == "POST":
+        new_listing = New_Listing(request.POST)
+        if new_listing.is_valid():
+            save_listing = Listing(title=new_listing.cleaned_data["title"],description=new_listing.cleaned_data["description"])
+    else:
+        return render(request,"auctions/create.html"),{
+            "form":new_listing
+        })
 
 def login_view(request):
     if request.method == "POST":
