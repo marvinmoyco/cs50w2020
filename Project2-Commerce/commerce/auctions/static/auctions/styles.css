@@ -1,3 +1,17 @@
 body {
     padding: 10px;
 }
+.row{
+    padding: 10px;
+}
+.alert{
+    text-align: center;
+}
+.img-fluid{
+    max-width: 50%;
+}
+.form-control-range{
+    min: 0;
+    max: 1000000;
+    value: 0;
+}
