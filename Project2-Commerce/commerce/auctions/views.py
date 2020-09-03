@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django import forms
-from .models import Listing
+from .models import *
 class New_Listing(forms.Form):
     title = forms.CharField()
     description = forms.CharField(widget=forms.Textarea)
@@ -26,8 +26,9 @@ def add_listing(request):
     if request.method == "POST":
         new_listing = New_Listing(request.POST)
         if new_listing.is_valid():
-  
-            save_listing = Listing(title=new_listing.cleaned_data["title"],description=new_listing.cleaned_data["description"],url=new_listing.cleaned_data["img_url"],initial_bid=new_listing.cleaned_data["initial_bid"])
+            saved_categories = new_listing.cleaned_data["categories"]
+            save_listing = Listing(title=new_listing.cleaned_data["title"],description=new_listing.cleaned_data["description"],url=new_listing.cleaned_data["img_url"])
+            initial_bid = Bid(value=new_listing.cleaned_data["initial_bid"],listing=save_listing,user=request.user)
             save_listing.save()
             return HttpResponseRedirect(reverse('auction:index'))
     else:

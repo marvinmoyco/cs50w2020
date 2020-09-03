@@ -13,6 +13,11 @@
       <h5 class="mt-0">{{ current_listing.title }}</h5>
       <h6>Current Bid: {{current_listing.initial_bid}}</h6>
       <p>{{ current_listing.description }}</p>
+      {% if user.is_authenticated %}
+
+      {% else %}
+
+      {% endif %}
     </div>
   </div>
 

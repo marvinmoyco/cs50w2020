@@ -3,44 +3,47 @@
 {% block body %}
 <h3>Create a new listing</h3>
 <div>
-
+  {% load crispy_forms_tags %}
     <form action="{% url 'auction:add_listing' %}" method = post>
         <div class="form-group">
-            {{ form.as_p }}
+            {{ form | crispy }}
         </div>
         
-        <input type=submit>
+        <input class="btn btn-primary" type="submit" value="Submit">
         {% csrf_token %}
     </form>
 </div>
 
+<!--
+
 <div>
-    <form>
+  <form>
+  <div class="form-group">
+      <label for="ListingTitle">Listing Title</label>
+      <input type="text" class="form-control" id="ListingTitle" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-muted">Create a unique title that does not include the price in the title.</small>
+    </div>
     <div class="form-group">
-        <label for="ListingTitle">Listing Title</label>
-        <input type="text" class="form-control" id="ListingTitle" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">Create a unique title that does not include the price in the title.</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlTextarea1">Listing Description</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="formControlRange">Initial Bid</label>
-        <input type="range" class="form-control-range" id="formControlRange">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Image URL</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">Place the url of the image of the listing here (It must be stored online).</small>
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">Categories</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <small id="emailHelp" class="form-text text-muted">Separate categories by a comma. (i.e. Food,Camera,Toys)</small>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <label for="exampleFormControlTextarea1">Listing Description</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="InitialBid">Initial Bid</label>
+      <input type="number" class="form-control" id="InitialBid">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Image URL</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-muted">Place the url of the image of the listing here (It must be stored online).</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Categories</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-muted">Separate categories by a comma. (i.e. Food,Camera,Toys)</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </div>
+-->
 
 {% endblock %}
