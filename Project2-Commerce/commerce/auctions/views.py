@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from django import forms
 from .models import *
 class New_Listing(forms.Form):
@@ -21,15 +22,27 @@ def index(request):
         "index_active":True
     })
 
+@login_required
 def add_listing(request):
     new_listing = New_Listing()
     if request.method == "POST":
         new_listing = New_Listing(request.POST)
         if new_listing.is_valid():
             saved_categories = new_listing.cleaned_data["categories"]
-            save_listing = Listing(title=new_listing.cleaned_data["title"],description=new_listing.cleaned_data["description"],url=new_listing.cleaned_data["img_url"])
-            initial_bid = Bid(value=new_listing.cleaned_data["initial_bid"],listing=save_listing,user=request.user)
+            categories = saved_categories.split(",")
+            
+            
+
+            save_listing = Listing(title=new_listing.cleaned_data["title"],description=new_listing.cleaned_data["description"],url=new_listing.cleaned_data["img_url"],creator=request.user,categories=saved_categories)
+            
+            request.user.bid = new_listing.cleaned_data["initial_bid"]
+            request.user.listing.set(save_listing)
+           
+            
             save_listing.save()
+            for x in categories:
+                each_categ = Categories(categories=x)
+                each_categ.save()
             return HttpResponseRedirect(reverse('auction:index'))
     else:
         return render(request,"auctions/create.html",{

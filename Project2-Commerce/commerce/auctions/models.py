@@ -4,7 +4,7 @@ from django.utils import timezone
 
 class User(AbstractUser):
     bid = models.PositiveIntegerField(default=0)
-    listing = models.ManyToManyField('Listing',blank=True,related_name="bids")
+    listing = models.ManyToManyField('Listing',blank=True,related_name="listing")
     date = models.DateTimeField(auto_now=True)
 
  
@@ -14,8 +14,8 @@ class Listing(models.Model):
     description = models.TextField()
     url = models.URLField()
     date_created = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField('Categories',blank=True,related_name="listing_categories")
-    bid_winner = models.ForeignKey('User',on_delete=models.CASCADE,related_name="winner",default=None)
+    categories = models.CharField(max_length=256,blank=True)
+    bid_winner = models.ForeignKey('User',blank=True,on_delete=models.CASCADE,related_name="winner",default=None)
     creator = models.ForeignKey('User',on_delete=models.CASCADE,related_name="creator_listing",default=None)
     closed = models.IntegerField(default = 0)
     
