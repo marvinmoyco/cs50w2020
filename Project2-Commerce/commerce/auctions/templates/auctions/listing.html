@@ -1,24 +1,97 @@
 {% extends "auctions/layout.html" %}
 {% load static %}
 {% block body %}
-<h3>Listing for {{ current_listing.title }}</h3>
-<h5>Posted: {{current_listing.date_created }}</h5>
-<div class="media">
-    {% if current_listing.url is None %}
-        <img src="{% static 'auctions/no_image.png' %}" class="img-fluid" alt="Picture of {{ current_listing.title }}">
-    {% else %}
-        <img src="{{ current_listing.url }}" class="img-fluid" alt="Picture of {{ current_listing.title }}">
-    {% endif %}
-    <div class="media-body">
-      <h5 class="mt-0">{{ current_listing.title }}</h5>
-      <h6>Current Bid: {{current_listing.initial_bid}}</h6>
-      <p>{{ current_listing.description }}</p>
-      {% if user.is_authenticated %}
-
-      {% else %}
-
-      {% endif %}
+  {% if message == "The bid should be higher than the current bid." %}
+    <div class="alert alert-danger" role="alert">
+      {{ message }}
     </div>
-  </div>
+  {% elif message == "The bid is successfully updated!" %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+  {% elif message == "The listing is already in the watchlist" %}
+    <div class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+  {% elif message == "The listing is successfully added to your watchlist" %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
 
+  {% endif %}
+  
+  <h2 style="text-align: center; font-weight: bold;">Listing for {{ current_listing.title }}</h2>
+  <h5>Posted: {{current_listing.date_created }}</h5>
+  <div class="media">
+      {% if current_listing.url is None %}
+          <img src="{% static 'auctions/no_image.png' %}" class="img-fluid" alt="Picture of {{ current_listing.title }}">
+      {% else %}
+          <img src="{{ current_listing.url }}" class="img-fluid" alt="Picture of {{ current_listing.title }}">
+      {% endif %}
+      <div class="media-body">
+        <h4 class="mt-0">{{ current_listing.title }}</h4>
+        <h5>Current Bid: {{ current_bid.bid }} of User: {{ current_bid.user.username }}</h5>
+        <h6 class="text-muted">Bid Update: {{ current_bid.date}}</h6>
+
+        <p>{{ current_listing.description }}</p>
+        {% load crispy_forms_tags %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
+              {% csrf_token %}
+              {{ bid_form | crispy }}
+              <input style="margin: 15px;" class="btn btn-primary" type="submit" name="bid_add" value="Bid for this listing">
+            </form>
+            <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
+              {% csrf_token %}
+              <input style="margin: 15px;" class="btn btn-primary" type="submit" name="watchlist_add" value="Add to Watchlist">
+            </form>
+        {% else %}
+
+        {% endif %}
+      </div>
+    </div>
+    <hr>
+    <div>
+        <h3> Comments: </h3>
+    </div>
+
+      {% for cur_comments in comments  %}
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ cur_comments.username.username }}</h5>
+              <p class="card-text">{{ cur_comments.comment }}</p>
+            </div>
+          <div class="card-footer text-muted">
+            Date posted: {{ cur_comments.comment_date }}
+          </div>
+        </div>
+        </div>
+      </div>
+      {% empty %}
+        No comments posted.
+      {% endfor %}
+
+      {% if user.is_authenticated %}
+      <form action="{% url 'auction:listing' current_listing.title %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Add your comments:</h5>
+                  <div class="form-group">
+                    {{ comment_form | crispy }}
+                  </div>
+              </div>
+            <div class="card-footer text-muted">
+              <input class="btn btn-primary" type="submit" name="comment_add" value="Add comment">
+            </div>
+          </div>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+ 
 {% endblock %}
