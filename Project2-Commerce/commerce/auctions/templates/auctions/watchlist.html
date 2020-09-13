@@ -1,33 +1,50 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    {% if message == "The listing is successfully removed" %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
     <h2 style="text-align:center; font-weight: bold;">Watchlisted listings of {{user.username}}</h2>
-    <h4>{{active_listing}}</h4>
+    
+    
     <div class="card-deck">
 
-        {% for listing1 in active_listing %}
-        <div class="card mb-3" >
-            <img src="{{ listing1.url }}" class="card-img-top" alt="Picture of {{ listing1.title }}">
-            <div class="card-body" style="flex-wrap: nowrap;">
-                <h5 class="card-title"><a href="{% url 'auction:listing' listing1.title %}">{{ listing1.title }}</a></h5>
-                {% for cur_bid in active_bids %}
-                     {% if cur_bid.listing.first == listing1 %}
-                        <h6 class="card-subtitle mb-2 text-muted">Current Bid: {{ cur_bid.bid }}</h6> 
-                     {% endif %}
-                {% endfor %}
-                 
-                <h6 class="card-subtitle mb-2 text-muted">Date added: {{ listing1.date_created }}</h6>
-                    
-                <p class="card-text">{{ listing1.description }}</p>
-                <a href="{% url 'auction:listing' listing1.title %}" class="btn btn-primary">Check this listing</a>
-            </div>
-                {% for cur_bid1 in active_bids %}
-                    {% if cur_bid1.listing.first == listing1 %}
-                        <div class="card-footer text-muted">Last bid update: {{ cur_bid1.date }}</div>
-                    {% endif %}
-                {% endfor %}
-            
-        </div>
+        {% for listing1 in active_listings %}
+            {% for each_watch in watchlists %}
+                {% if listing1 in each_watch.listing.all %}
+                    <div class="card mb-3" >
+                        <img src="{{ listing1.url }}" class="card-img-top" alt="Picture of {{ listing1.title }}">
+                        <div class="card-body" style="flex-wrap: nowrap;">
+                            <h5 class="card-title"><a href="{% url 'auction:listing' listing1.title %}">{{ listing1.title }}</a></h5>
+                            {% for cur_bid in active_bids %}
+                                {% if cur_bid.listing.first == listing1 %}
+                                    <h6 class="card-subtitle mb-2 text-muted">Current Bid: {{ cur_bid.bid }}</h6> 
+                                {% endif %}
+                            {% endfor %}
+                            
+                            <h6 class="card-subtitle mb-2 text-muted">Date added: {{ listing1.date_created }}</h6>
+                                
+                            <p class="card-text">{{ listing1.description }}</p>
+                            <a href="{% url 'auction:listing' listing1.title %}" class="btn btn-primary">Check this listing</a>
+                            <form action="{% url 'auction:watchlist' user.username %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" id="listing_name" name="listing_name" value="{{ listing1.title }}">
+                                <input style="margin-top: 15px;" class="btn btn-primary" type="submit" name="remove_listing" value="Remove from watchlist">
+                            </form>
+                        </div>
+                            {% for cur_bid1 in active_bids %}
+                                {% if cur_bid1.listing.first == listing1 %}
+                                    <div class="card-footer text-muted">Last bid update: {{ cur_bid1.date }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        
+                    </div>
+                {% endif %}
+
+
+            {% endfor %}
         {% empty %}
             <h4>There is no listing available.</h4>
         {% endfor %}

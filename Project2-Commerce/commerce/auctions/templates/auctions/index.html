@@ -6,28 +6,31 @@
     <div class="card-deck">
 
         {% for listing1 in active_listings %}
-        <div class="card mb-3" >
-            <img src="{{ listing1.url }}" class="card-img-top" alt="Picture of {{ listing1.title }}">
-            <div class="card-body" style="flex-wrap: nowrap;">
-                <h5 class="card-title"><a href="{% url 'auction:listing' listing1.title %}">{{ listing1.title }}</a></h5>
-                {% for cur_bid in active_bids %}
-                     {% if cur_bid.listing.first == listing1 %}
-                        <h6 class="card-subtitle mb-2 text-muted">Current Bid: {{ cur_bid.bid }}</h6> 
-                     {% endif %}
-                {% endfor %}
-                 
-                <h6 class="card-subtitle mb-2 text-muted">Date added: {{ listing1.date_created }}</h6>
+            {% if listing1.closed == 0 %}
+                <div class="card mb-3" >
+                    <img src="{{ listing1.url }}" class="card-img-top" alt="Picture of {{ listing1.title }}">
+                    <div class="card-body" style="flex-wrap: nowrap;">
+                        <h5 class="card-title"><a href="{% url 'auction:listing' listing1.title %}">{{ listing1.title }}</a></h5>
+                        {% for cur_bid in active_bids %}
+                            {% if cur_bid.listing.first == listing1 %}
+                                <h6 class="card-subtitle mb-2 text-muted">Current Bid: {{ cur_bid.bid }}</h6> 
+                            {% endif %}
+                        {% endfor %}
+                        
+                        <h6 class="card-subtitle mb-2 text-muted">Date added: {{ listing1.date_created }}</h6>
+                            
+                        <p class="card-text">{{ listing1.description }}</p>
+                        <a href="{% url 'auction:listing' listing1.title %}" class="btn btn-primary">Check this listing</a>
+                    </div>
+                        {% for cur_bid1 in active_bids %}
+                            {% if cur_bid1.listing.first == listing1 %}
+                                <div class="card-footer text-muted">Last bid update: {{ cur_bid1.date }}</div>
+                            {% endif %}
+                        {% endfor %}
                     
-                <p class="card-text">{{ listing1.description }}</p>
-                <a href="{% url 'auction:listing' listing1.title %}" class="btn btn-primary">Check this listing</a>
-            </div>
-                {% for cur_bid1 in active_bids %}
-                    {% if cur_bid1.listing.first == listing1 %}
-                        <div class="card-footer text-muted">Last bid update: {{ cur_bid1.date }}</div>
-                    {% endif %}
-                {% endfor %}
+                </div>
+            {% endif %}
             
-        </div>
         {% empty %}
             <h4>There is no listing available.</h4>
         {% endfor %}

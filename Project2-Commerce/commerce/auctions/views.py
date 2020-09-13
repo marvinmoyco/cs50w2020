@@ -119,6 +119,7 @@ def listing(request,listing_name):
     comment = Comment.objects.filter(listing=current_listing)
     new_comment1 = New_Comment()
     new_bid1 = New_Bid()
+    message = None
     if request.method == "POST":
         # When the form submitted is a comment form
         if 'comment_add' in request.POST:
@@ -183,7 +184,13 @@ def listing(request,listing_name):
                 "bid_form": new_bid1,
                 "message": "The listing is already in the watchlist"
             })   
-            
+        # When the listing creator closes the auction...
+        elif 'close_listing' in request.POST:
+            message = "The auction for this listing is closed"
+            current_listing.bid_winner = User.objects.get(username = current_bid.user.username)
+            current_listing.closed = 1
+            current_listing.save()
+
           
 
     return render(request, "auctions/listing.html",{
@@ -192,20 +199,26 @@ def listing(request,listing_name):
         "comments": comment,
         "comment_form": new_comment1,
         "bid_form": new_bid1,
-        "message": None
+        "message": message
 
     })
 
 @login_required
 def watchlist(request,username):
-
-
+    message = None
+    active_watchlist = Watchlist.objects.filter(user=request.user)
+    # When deleting a watchlist...
+    if request.method == "POST":
+        listing_name = request.POST["listing_name"]
+        all_watchlist = Watchlist.objects.filter(listing=Listing.objects.get(title=listing_name)).delete()
+        message = "The listing is successfully removed"
     return render(request, "auctions/watchlist.html",{
-        "active_listings": Listing.objects.filter(Q(watchlist__contains=request.user)),
+        "active_listings": Listing.objects.all(),
         "active_bids": Bid.objects.all(),
-        "watchlist_active":True
-  
-    })
+        "watchlist_active":True,
+        "watchlists": active_watchlist,
+        "message": message
+      })
     
 
 def categories_index(request):

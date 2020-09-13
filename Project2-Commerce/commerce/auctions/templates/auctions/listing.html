@@ -17,9 +17,16 @@
     <div class="alert alert-success" role="alert">
       {{ message }}
     </div>
-
+  {% elif message == "The auction for this listing is closed" %}
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
   {% endif %}
-  
+  {% if user.username == current_listing.bid_winner.username %}
+    <div class="alert alert-success" role="alert">
+      Congratulations, {{ user.username }}! You have won the auction for this listing!
+    </div>
+  {% endif %}
   <h2 style="text-align: center; font-weight: bold;">Listing for {{ current_listing.title }}</h2>
   <h5>Posted: {{current_listing.date_created }}</h5>
   <div class="media">
@@ -28,7 +35,7 @@
       {% else %}
           <img src="{{ current_listing.url }}" class="img-fluid" alt="Picture of {{ current_listing.title }}">
       {% endif %}
-      <div class="media-body">
+      <div class="media-body" style="margin: 10px;">
         <h4 class="mt-0">{{ current_listing.title }}</h4>
         <h5>Current Bid: {{ current_bid.bid }} of User: {{ current_bid.user.username }}</h5>
         <h6 class="text-muted">Bid Update: {{ current_bid.date}}</h6>
@@ -36,15 +43,25 @@
         <p>{{ current_listing.description }}</p>
         {% load crispy_forms_tags %}
         {% if user.is_authenticated %}
-            <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
-              {% csrf_token %}
-              {{ bid_form | crispy }}
-              <input style="margin: 15px;" class="btn btn-primary" type="submit" name="bid_add" value="Bid for this listing">
-            </form>
-            <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
-              {% csrf_token %}
-              <input style="margin: 15px;" class="btn btn-primary" type="submit" name="watchlist_add" value="Add to Watchlist">
-            </form>
+            {% if current_listing.bid_winner is None %}
+              <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
+                {% csrf_token %}
+                {{ bid_form | crispy }}
+                <input style="margin: 15px;" class="btn btn-primary" type="submit" name="bid_add" value="Bid for this listing">
+              </form>
+              <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
+                {% csrf_token %}
+                <input style="margin: 15px;" class="btn btn-primary" type="submit" name="watchlist_add" value="Add to Watchlist">
+              </form>
+              {% if user == current_listing.creator %}
+                <form action="{% url 'auction:listing' current_listing.title %}" method="post" >
+                  {% csrf_token %}
+                  <input  style="margin: 15px;" class="btn btn-primary" type="submit" name="close_listing" value="Close this listing">
+                </form>
+              {% endif %}
+            {% else %}
+              
+            {% endif %}        
         {% else %}
 
         {% endif %}
