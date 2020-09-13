@@ -3,7 +3,9 @@ from django.db import models
 from django.utils import timezone
 
 class User(AbstractUser):
+    listing = models.ManyToManyField('Listing',blank=True,related_name="watchlist",default=None)
     pass
+
 
 class Bid(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,7 +38,7 @@ class Categories(models.Model):
     id = models.AutoField(primary_key=True)
     categories = models.TextField(default="",unique=True,blank=True,null=True)
 
-class Watchlist(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ManyToManyField('User', blank=True, related_name="user_watchlist",default=None)
-    listing = models.ManyToManyField('Listing',blank=True,related_name="watchlist",default=None)
+# class Watchlist(models.Model):
+#    id = models.AutoField(primary_key=True)
+#    user = models.ManyToManyField('User', blank=True, related_name="user_watchlist",default=None)
+#    listing = models.ManyToManyField('Listing',blank=True,related_name="watchlist",default=None)

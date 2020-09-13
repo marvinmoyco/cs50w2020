@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django import forms
 from .models import *
+from django.db.models import Q
 import datetime
 class New_Listing(forms.Form):
     title = forms.CharField()
@@ -113,7 +114,7 @@ def register(request):
         })
 
 def listing(request,listing_name):
-    current_listing = Listing.objects.get(title = listing_name)
+    current_listing = Listing.objects.get(title=listing_name)
     current_bid = Bid.objects.get(listing=current_listing)
     comment = Comment.objects.filter(listing=current_listing)
     new_comment1 = New_Comment()
@@ -134,12 +135,15 @@ def listing(request,listing_name):
             if new_bid.is_valid():
                 if new_bid.cleaned_data["new_bid"] > current_bid.bid:
                     Bid.objects.filter(listing=current_listing).update(bid=int(new_bid.cleaned_data["new_bid"]),user=request.user,date=datetime.datetime.now())
+                    current_listing = Listing.objects.get(title = listing_name)
+                    current_bid = Bid.objects.get(listing=current_listing)
+                    comment = Comment.objects.filter(listing=current_listing)
                     return render(request, "auctions/listing.html",{
                         "current_listing":current_listing,
                         "current_bid": current_bid,
                         "comments": comment,
                         "comment_form": new_comment1,
-                        "bid_form": new_bid,
+                        "bid_form": new_bid1,
                         "message": "The bid is successfully updated!"
 
                     })
@@ -190,4 +194,31 @@ def listing(request,listing_name):
         "bid_form": new_bid1,
         "message": None
 
+    })
+
+@login_required
+def watchlist(request,username):
+
+
+    return render(request, "auctions/watchlist.html",{
+        "active_listings": Listing.objects.filter(Q(watchlist__contains=request.user)),
+        "active_bids": Bid.objects.all(),
+        "watchlist_active":True
+  
+    })
+    
+
+def categories_index(request):
+    return render(request, "auctions/categories_index.html",{
+        "categories_active":True,
+        "categories": Categories.objects.all()
+    })
+
+def category_name(request,category):
+    return render(request, "auctions/category_name.html",{
+        "active_listings": Listing.objects.filter(categories__contains=category),
+        "active_bids": Bid.objects.all(),
+        "categories_active":True,
+        "category_title":category
+      
     })

@@ -1,11 +1,11 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-
+    <h2 style="text-align:center; font-weight: bold;">Watchlisted listings of {{user.username}}</h2>
+    <h4>{{active_listing}}</h4>
     <div class="card-deck">
 
-        {% for listing1 in active_listings %}
+        {% for listing1 in active_listing %}
         <div class="card mb-3" >
             <img src="{{ listing1.url }}" class="card-img-top" alt="Picture of {{ listing1.title }}">
             <div class="card-body" style="flex-wrap: nowrap;">
@@ -33,3 +33,5 @@
         {% endfor %}
     </div>
 {% endblock %}
+
+

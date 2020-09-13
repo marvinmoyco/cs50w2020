@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="text-align: center; font-weight: bold;">List of Categories</h2>
+
+    <div class="card-deck">
+
+        {% for cat in categories %}
+        <div class="card" >
+            <div class="card-body" style="flex-wrap: nowrap;">
+                <h5 class="card-title" style="font-weight: bold; text-align: center;"><a href="{% url 'auction:category_name' cat.categories %}">{{ cat.categories }}</a></h5>
+            </div>
+        </div>
+        {% empty %}
+            <h4>There is no listing available.</h4>
+        {% endfor %}
+    </div>
+{% endblock %}
