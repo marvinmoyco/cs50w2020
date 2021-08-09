@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
-
+  document.querySelector('.list-group-item list-group-item-action')
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -36,7 +36,8 @@ function compose_email() {
     .then(result => {
         // Print result
         console.log(result);
-        alert(result)
+        alert(result.message)
+        load_mailbox('inbox');
     });
     
   };
@@ -56,33 +57,21 @@ function load_mailbox(mailbox) {
   .then(emails => {
       // Print emails
       console.log(emails);
-      console.log(emails[0].subject)
+      console.log(emails[1].subject)
       // ... do something else with emails ...
       document.querySelector('#emails-view').innerHTML += `<div class="list-group">`;
       for (let i=0;i<emails.length;i++)
       {
-        document.querySelector('#emails-view').innerHTML += `<a href="#" class="list-group-item list-group-item-action">
+        document.querySelector('.list-group').innerHTML += `<a href="'/emails/'${emails[i].id}" class="list-group-item list-group-item-action">
                                                                 <div class="d-flex w-100 justify-content-between">
                                                                   <h5 class="mb-1">${emails[i].subject}</h5>
                                                                   <small class="text-muted">${emails[i].timestamp}</small>
                                                                 </div>
                                                                 <p class="mb-1">${emails[i].recipients}</p>
-                                                                <small class="text-muted">${emails[i].body}</small>
+                                                                <small class="text-muted">${emails[i].body.slice(0,10)}</small>
                                                               </a>
-                                                                `;
-        
-        
-        
-        
-        //document.querySelector('#emails-view').innerHTML += `<div class="d-flex w-100 justify-content-between">`;
-        //document.querySelector('#emails-view').innerHTML += `<h5 class="mb-1">${emails[i].subject}</h5>`;
-        //document.querySelector('#emails-view').innerHTML += `<small class="text-muted">${emails[i].timestamp}</small>`;
-        //document.querySelector('#emails-view').innerHTML += `</div>`;
-        //document.querySelector('#emails-view').innerHTML += `<p class="mb-1">${emails[i].recipients}</p>`;
-        //document.querySelector('#emails-view').innerHTML += `<small class="text-muted">${emails[i].body}</small>`;
-        //document.querySelector('#emails-view').innerHTML += `</a>`;
+                                                                `; 
       }
-      //document.querySelector('#emails-view').innerHTML += `</div">`;
   });
 
 
