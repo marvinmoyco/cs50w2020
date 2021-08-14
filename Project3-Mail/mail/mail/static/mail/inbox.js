@@ -18,7 +18,7 @@ function compose_email(receipients, subject) {
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#single-email-view').style.display = 'none';
-  alert(receipients)
+  //alert(receipients)
   // Clear out composition fields
   if(receipients === undefined){
     document.querySelector('#compose-recipients').value = '';
@@ -148,7 +148,7 @@ function load_email(id){
       reply_button.innerHTML = 'Reply';
       reply_button.setAttribute('class','btn btn-primary');
       reply_button.setAttribute('role','button');
-      reply_button.addEventListener('click' , () => compose_email(email_sender,email_subject))
+      reply_button.addEventListener('click' , () => compose_email(email.sender,email.subject));
       document.querySelector('#single-email-view').appendChild(reply_button);
   });
 
