@@ -1,0 +1,22 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <div id="new_post" class="container-fluid">
+        {% if user.is_authenticated %}
+            <form action="#" method="post" >
+                {% csrf_token %}
+                <h2> New Post</h2>
+                <div class="form-group">
+                    <input class="form-control" type="textarea" name="post_content" placeholder="What's on your mind?">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Post">
+            </form>
+            <hr>
+        {% endif %}
+    </div>
+
+    <div id="all_post">
+        <h2>News Feed</h2>
+    </div>
+{% endblock %}
+
