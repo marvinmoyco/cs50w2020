@@ -7,12 +7,21 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import json
-
+from datetime import datetime
 from .models import *
+from django import forms
 
+
+class NewPostForm(forms.Form):
+    post_content = forms.Textarea()
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.user.is_authenticated:
+        return render(request, "network/index.html")
+
+    else:
+
+        return HttpResponseRedirect(reverse("login"))
 
 @csrf_exempt
 @login_required
@@ -26,12 +35,17 @@ def profile(request,username):
     return JsonResponse(user.serialize(),safe=False)
 
 
-
+@csrf_exempt
 @login_required
 def news_feed(request):
 
     if request.method == "POST":
-        data = json.loads(request.body)
+        
+        post_content = request.POST.get('post_content')
+
+
+        #data = json.loads(request.body)
+       
         #Check if author exists
         try:
             user = User.objects.get(username=request.user)
@@ -39,22 +53,26 @@ def news_feed(request):
             return JsonResponse({"error":f"User account with username: {request.user} does not exist."},status=404)
 
         #Get the post content
-        post_content = data.get("post_content")
+       
+        print("Post content:     ")
+        print(post_content)
         if post_content.strip() == "":
-            return JsonResponse({"error":"Post should not be empty or whitespaces only."},status_code=404 )
+            return JsonResponse({"error":"Post should not be empty or whitespaces only."})
 
         #Save the post in db
 
         post = Post(
-                    author  = request.user,
-                    content = post_content
+                    user  = request.user,
+                    content = post_content,
                     )
 
         post.save()
-        return JsonResponse({"message": "Post successfully posted"},status_code = 201)
+
+        return HttpResponseRedirect(reverse("index"))
 
     else:
         posts = Post.objects.order_by("-timestamp").all()
+        print(posts)
         return JsonResponse([post.serialize() for post in posts ],safe=False)
 
 

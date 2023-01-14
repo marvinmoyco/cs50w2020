@@ -46,7 +46,7 @@ function compose_email(email) {
     fetch('/emails', {
       method: 'POST',
       body: JSON.stringify({
-          recipients: document.querySelector('#compose-recipients').value,
+          post_content: document.querySelector('#compose-recipients').value,
           subject: document.querySelector('#compose-subject').value,
           body: document.querySelector('#compose-body').value,
           archived: false,

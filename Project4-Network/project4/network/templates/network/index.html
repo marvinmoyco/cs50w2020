@@ -3,13 +3,14 @@
 {% block body %}
     <div id="new_post" class="container-fluid">
         {% if user.is_authenticated %}
-            <form action="#" method="post" >
+            <form id="new_post_form" action="{% url 'news_feed' %}" method="POST">
                 {% csrf_token %}
                 <h2> New Post</h2>
                 <div class="form-group">
-                    <input class="form-control" type="textarea" name="post_content" placeholder="What's on your mind?">
+                    <input class="form-control" type="textarea" id="post_body" name="post_content" placeholder="What's on your mind?">
                 </div>
-                <input class="btn btn-primary" type="submit" value="Post">
+                <button  id="form_submit" type="submit" class="btn btn-primary">Post</button>
+               
             </form>
             <hr>
         {% endif %}

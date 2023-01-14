@@ -11,5 +11,6 @@ urlpatterns = [
 
     #API Routes
     path("network/<str:username>",views.profile,name="profile"),
-    path("network/news_feed",views.news_feed,name="news_feed")
+    path("news_feed",views.news_feed,name="news_feed"),
+   
 ]
