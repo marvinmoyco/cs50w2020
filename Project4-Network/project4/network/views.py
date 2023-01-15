@@ -28,7 +28,7 @@ def index(request):
 def profile(request,username):
     # Query for requested email
     try:
-        user = User.objects.get(user=request.user)
+        user = User.objects.get(username=request.user)
     except User.DoesNotExist:
         return JsonResponse({"error": "User account not found."}, status=404)
 
@@ -72,7 +72,7 @@ def news_feed(request):
 
     else:
         posts = Post.objects.order_by("-timestamp").all()
-        print(posts)
+        
         return JsonResponse([post.serialize() for post in posts ],safe=False)
 
 

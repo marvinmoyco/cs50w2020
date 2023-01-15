@@ -6,10 +6,20 @@ class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     posts = models.ManyToManyField("Post",default=None,related_name="user_posts")
     creationDate = models.DateTimeField(auto_now_add=True)
+
+    
     def serialize(self):
+        posts = []
+
+        for post in self.posts.all():
+            print(post.serialize())
+            posts.append(post.serialize())
+
         return{
             "username": self.username,
-            "posts": self.posts.all(),
+            "email": self.email,
+            "followers": self.follower.all().count(),
+            "posts": posts,
             "date_created": self.creationDate,
 
         }
@@ -29,9 +39,9 @@ class Post(models.Model):
         return{
             "user": self.user.username,
             "content": self.content,
-            "date_posted": self.timestamp.strftime("%m/%d/%Y, %I%p"),
-            "date_edited": self.last_edited.strftime("%m/%d/%Y, %I%p"),
-            "likes": self.liked_post.all().count()
+            "date_posted": self.timestamp.strftime("%x"),
+            "date_edited": self.last_edited.strftime("%x %X"),
+            "likes": self.liked_post.all().count(),
         }
 
 

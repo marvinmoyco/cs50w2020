@@ -37,12 +37,21 @@ function load_newsfeed(){
                 //Create a list item
                 var post = document.createElement('li');
                 post.setAttribute('class','list-group-item');
-                post.innerHTML = `<div class="d-flex w-100 justify-content-between">
-                                      <h5 class="mb-1">${posts[i].user}</h5>
-                                      <small class="text-muted">${posts[i].date_posted}</small>
-                                 </div>
-                                 <span class="badge bg-primary rounded-pill">${posts[i].likes}</span>
-                                      <small class="text-muted">${posts[i].content }</small>`;
+
+                post.innerHTML = `<div class="card ">
+
+                                    <div class="card-body">
+                                    <h5><a href="network/${posts[i].user}">@${posts[i].user}</a></h5>
+                                        <p class="card-text">${posts[i].content}</p>
+                                        <a href="#" class="badge">Like this post</a>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <span class="text-right"> Post created: ${posts[i].date_posted}</span>
+                                        <span class="text-right"> Last updated: ${posts[i].date_edited}</span>
+                                        <span>Likes: ${posts[i].likes}</span>
+                                        
+                                    </div>
+                                </div>`;
                 //Append the list item to the list group
                 div_listgroup.appendChild(post);
             }

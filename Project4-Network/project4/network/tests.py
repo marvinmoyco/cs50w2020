@@ -16,6 +16,7 @@ class PostTests(TestCase):
 
         #Create posts
         p1 = Post.objects.create(user=u1,content="This is content for post 1")
+        time = p1.timestamp
         u1.posts.add(p1)
         p2 = Post.objects.create(user=u2,content="This is content for post 2")
         u2.posts.add(p2)
@@ -117,6 +118,17 @@ class PostTests(TestCase):
         self.assertEqual(u1.posts.count(),posts.count())
 
 
-    
+    def test_user_posts(self):
+        """
+        Checks if serialize() of Post model works properly
+        """
+        u1 = User.objects.get(username="u1")
+        p1 = Post.objects.filter(user =u1)
+        print(p1.first().serialize())
+        print(p1.first().timestamp.strftime("%c"))
+        print(p1.first().timestamp.strftime("%x %X"))
+        
+        self.assertGreater(p1.first().last_edited,p1.first().timestamp)
+
      
     
