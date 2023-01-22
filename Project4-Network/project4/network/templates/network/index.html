@@ -3,6 +3,15 @@
 {% block body %}
     <div id="new_post" class="container-fluid">
         {% if user.is_authenticated %}
+            {% if isContentEmpty %}
+            <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div>
+                  Error: Post content should not be empty.
+                </div>
+              </div>
+
+            {% endif %}
             <form id="new_post_form" action="{% url 'news_feed' %}" method="POST">
                 {% csrf_token %}
                 <h2> New Post</h2>

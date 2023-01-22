@@ -27,12 +27,19 @@ def index(request):
 @login_required
 def profile(request,username):
     # Query for requested email
-    try:
+    try: 
         user = User.objects.get(username=request.user)
     except User.DoesNotExist:
         return JsonResponse({"error": "User account not found."}, status=404)
 
-    return JsonResponse(user.serialize(),safe=False)
+    # Serialize all posts
+    return render(request, "network/profile.html",
+    {
+        "username": request.user,
+        "email": user.email,
+        "followers": user.follower.all().count(),
+        "posts": user.posts.seriali
+    })
 
 
 @csrf_exempt
@@ -52,23 +59,20 @@ def news_feed(request):
         except User.DoesNotExist:
             return JsonResponse({"error":f"User account with username: {request.user} does not exist."},status=404)
 
-        #Get the post content
-       
-        print("Post content:     ")
-        print(post_content)
-        if post_content.strip() == "":
-            return JsonResponse({"error":"Post should not be empty or whitespaces only."})
-
         #Save the post in db
 
         post = Post(
                     user  = request.user,
-                    content = post_content,
+                    content = post_content.strip(),
                     )
+        if post.content == "" or post.content == None:
+            isContentEmpty = True
+            return HttpResponseRedirect(reverse("index", args=(isContentEmpty,)))
+        else:
+            isContentEmpty = False
+            post.save()
 
-        post.save()
-
-        return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("index", args=(isContentEmpty,)))
 
     else:
         posts = Post.objects.order_by("-timestamp").all()
