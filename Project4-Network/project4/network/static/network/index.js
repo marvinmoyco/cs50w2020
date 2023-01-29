@@ -54,51 +54,30 @@ function load_newsfeed(){
                                 </div>`;
                 //Append the list item to the list group
                 div_listgroup.appendChild(post);
+
+                
+
             }
         }
         
-
+        
+       
+        
 
     });
-    /*document.querySelector('#new_post_form').onsubmit = () => {
-        fetch('/news_feed',{
-            method: 'POST',
-            body: JSON.stringify({
-                post_content: document.querySelector('#post_body').value,
-            })
-        })
-        .then(response => response.json())
-        .then(result => {
-            alert("Post successfully posted in newsfeed.");
-            load_newsfeed();
-
-        });
 
 
-    };*/
+    document.querySelector('#form_submit').addEventListener('click', () =>{
+        const emptyPostAlert = document.getElementById('liveToast');
+        var isContentEmpty = document.getElementById('post_body');
+        if (isContentEmpty.value.trim() === '') {
+            const toast = new bootstrap.Toast(emptyPostAlert)
+            toast.show()
+        }
+    });
+    
+
+
 
 }
   
-/*
-
-function new_post(){
-
-    document.querySelector('#new_post_form').onsubmit = () => {
-        fetch('/news_feed',{
-            method: 'POST',
-            body: JSON.stringify({
-                post_content: document.querySelector('#post_body').value,
-            })
-        })
-        .then(response => response.json())
-        .then(result => {
-            alert("Post successfully posted in newsfeed.");
-            load_newsfeed();
-
-        });
-
-
-    };
-
-
-}*/

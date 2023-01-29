@@ -108,13 +108,21 @@ class PostTests(TestCase):
         self.assertEqual(t1.following_user.get(),u2)
 
 
-    def test_user_posts(self):
+    def test_user_post_contents(self):
         """
         Checks if the user has posts in his database record
         """
 
         u1 = User.objects.get(username="u1")
         posts = Post.objects.filter(user=u1)
+        print(f"Posts: {u1.post_creator.all()}")
+        for post in u1.post_creator.all():
+            print("=======================================")
+            print(f"Post username: {post.user}")
+            print(f"Post content: {post.content}")
+            print(f"Post created: {post.timestamp}")
+            print(f"Post last edited: {post.last_edited}")
+            print(f"Post likes: {post.likes}")
         self.assertEqual(u1.posts.count(),posts.count())
 
 
@@ -124,11 +132,11 @@ class PostTests(TestCase):
         """
         u1 = User.objects.get(username="u1")
         p1 = Post.objects.filter(user =u1)
-        print(p1.first().serialize())
-        print(p1.first().timestamp.strftime("%c"))
-        print(p1.first().timestamp.strftime("%x %X"))
+        #print(p1.first().serialize())
+        #print(p1.first().timestamp.strftime("%c"))
+        #print(p1.first().timestamp.strftime("%x %X"))
         
-        self.assertGreater(p1.first().last_edited,p1.first().timestamp)
+        self.assertEqual(p1.first().last_edited,p1.first().timestamp)
 
      
     

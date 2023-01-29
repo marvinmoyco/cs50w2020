@@ -11,7 +11,8 @@ class User(AbstractUser):
     def serialize(self):
         posts = []
 
-        for post in self.posts.all():
+        for post in self.post_creator.all():
+            print("Printing in models.py:")
             print(post.serialize())
             posts.append(post.serialize())
 
@@ -27,7 +28,7 @@ class User(AbstractUser):
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey("User", on_delete=models.PROTECT)
+    user = models.ForeignKey("User", on_delete=models.PROTECT,related_name="post_creator")
     content = models.TextField(blank=True,null=True,max_length=480)
     timestamp = models.DateTimeField(auto_now_add=True)
     last_edited = models.DateTimeField(auto_now=True,blank=True,null=True)

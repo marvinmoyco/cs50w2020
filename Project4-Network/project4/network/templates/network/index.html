@@ -3,15 +3,7 @@
 {% block body %}
     <div id="new_post" class="container-fluid">
         {% if user.is_authenticated %}
-            {% if isContentEmpty %}
-            <div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <div>
-                  Error: Post content should not be empty.
-                </div>
-              </div>
-
-            {% endif %}
+            
             <form id="new_post_form" action="{% url 'news_feed' %}" method="POST">
                 {% csrf_token %}
                 <h2> New Post</h2>
@@ -21,6 +13,24 @@
                 <button  id="form_submit" type="submit" class="btn btn-primary">Post</button>
                
             </form>
+            
+            {% if isContentEmpty %}
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <!---img src="..." class="rounded me-2" alt="...">--->
+                            <strong class="me-auto">Tweeter</strong>
+                            <small> {{ toastTime }}</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ERROR: You cannot post with an empty string.
+                        </div>
+                    </div>
+                </div>
+                    
+
+            {% endif %}
             <hr>
         {% endif %}
     </div>
@@ -28,5 +38,7 @@
     <div id="all_post">
         <h2>News Feed</h2>
     </div>
+
+    
 {% endblock %}
 

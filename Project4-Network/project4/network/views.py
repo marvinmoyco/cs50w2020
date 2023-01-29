@@ -15,9 +15,12 @@ from django import forms
 class NewPostForm(forms.Form):
     post_content = forms.Textarea()
 
-def index(request):
+def index(request,isContentEmpty=False):
     if request.user.is_authenticated:
-        return render(request, "network/index.html")
+
+        return render(request, "network/index.html",{
+            "isContentEmpty":isContentEmpty,
+        })
 
     else:
 
@@ -31,14 +34,18 @@ def profile(request,username):
         user = User.objects.get(username=request.user)
     except User.DoesNotExist:
         return JsonResponse({"error": "User account not found."}, status=404)
-
+    print("Printing in views.py:")
+    print(user)
+    serialized_user = user.serialize()
+    print(f"Posts: {serialized_user['posts']}")
     # Serialize all posts
     return render(request, "network/profile.html",
     {
-        "username": request.user,
-        "email": user.email,
-        "followers": user.follower.all().count(),
-        "posts": user.posts.seriali
+        "username": serialized_user['username'] ,
+        "email": serialized_user['email'],
+        "followers": serialized_user['followers'],
+        "posts": serialized_user['posts'],
+        "date_created": serialized_user['date_created'],
     })
 
 
@@ -65,15 +72,20 @@ def news_feed(request):
                     user  = request.user,
                     content = post_content.strip(),
                     )
+            
         if post.content == "" or post.content == None:
             isContentEmpty = True
-            return HttpResponseRedirect(reverse("index", args=(isContentEmpty,)))
+            #return HttpResponseRedirect(reverse("index", args=(isContentEmpty,)))
+
         else:
             isContentEmpty = False
             post.save()
 
-            return HttpResponseRedirect(reverse("index", args=(isContentEmpty,)))
-
+            #return HttpResponseRedirect(reverse("index", args={"isContentEmpty": isContentEmpty,}))
+        return render(request, "network/index.html",{
+            "isContentEmpty":isContentEmpty,
+            "toastTime": post.timestamp,
+        })
     else:
         posts = Post.objects.order_by("-timestamp").all()
         
@@ -102,7 +114,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("index", kwargs=(False,)))
 
 
 def register(request):
@@ -127,6 +139,6 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("index",kwargs=(False,)))
     else:
         return render(request, "network/register.html")

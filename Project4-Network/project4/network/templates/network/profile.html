@@ -2,8 +2,38 @@
 
 {% block body %}
    
+<div id="profile_data" class="container-fluid">
+    <h5>Name: {{ username }}</h5>
+    <p>
+        Email: {{ email }}
+        Number of followers: {{ followers }}
+        Profile created on: {{ date_created }}
+    </p>
+</div>
 
-    <div id="profile">
-        <h2>News Feed</h2>
+<div id="profile_posts" class="container-fluid">
+
+    <div class="row g-8">
+
+        {% for post in posts %}
+                <div class="col-3"></div>
+                <div class="card col-6">
+                    <div class="card-body">
+                    <h5><a href="network/{{post.user}}">{{ post.user }}</a></h5>
+                        <p class="card-text">{{post.content}}</p>
+                        <a href="#" class="badge">Like this post</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <span class="text-right"> Post created: {{post.date_posted}}</span>
+                        <span class="text-right"> Last updated: {{post.date_edited}}</span>
+                        <span>Likes: {{post.likes}}</span>
+                        
+                    </div>
+                </div>
+                <div class="col-3"></div>
+
+        {% endfor %}
     </div>
+
+</div>
 {% endblock %}
