@@ -4,6 +4,7 @@ from django.db.utils import OperationalError
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
+    birthdate = models.DateField(blank=True, null=True, default=None)
     posts = models.ManyToManyField("Post",default=None,related_name="user_posts")
     creationDate = models.DateTimeField(auto_now_add=True)
 
@@ -11,9 +12,7 @@ class User(AbstractUser):
     def serialize(self):
         posts = []
 
-        for post in self.post_creator.all():
-            print("Printing in models.py:")
-            print(post.serialize())
+        for post in self.post_creator.order_by("-timestamp").all():
             posts.append(post.serialize())
 
         return{

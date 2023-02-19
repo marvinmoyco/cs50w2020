@@ -114,7 +114,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index", kwargs=(False,)))
+    return HttpResponseRedirect(reverse("index"))
 
 
 def register(request):
