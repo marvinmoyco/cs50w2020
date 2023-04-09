@@ -3,12 +3,16 @@
 {% block body %}
    
 <div id="profile_data" class="container-fluid">
-    <h5>Name: {{ username }}</h5>
-    <p>
-        Email: {{ email }}
-        Number of followers: {{ followers }}
-        Profile created on: {{ date_created }}
-    </p>
+    <div class="col-3">
+        <h4>{{first_name}} {{ last_name }}</h4>
+        <h5 class="text-muted">{{ username }}</h5>
+        <hr>
+        <p>
+            Email: {{ email }}
+            Number of followers: {{ followers }}
+            Profile created on: {{ date_created }}
+        </p>
+    </div>
 </div>
 
 <div id="profile_posts" class="container-fluid">
